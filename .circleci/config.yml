@@ -36,9 +36,12 @@ jobs:
     executor: default
 
     steps:
+      - attach_workspace:
+          at: .
+
       - run:
           name: Run Linting
-          command: echo "Lint"
+          command: yarn lint
 
   unit-test:
     executor: default
