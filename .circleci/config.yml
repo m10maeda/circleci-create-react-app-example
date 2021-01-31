@@ -10,9 +10,27 @@ jobs:
     executor: default
 
     steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - v1-yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - v1-yarn-packages-{{ .Branch }}-
+            - v1-yarn-packages-
+
       - run:
-          name: Setup
-          command: echo "Setup"
+          name: Install Dependencies
+          command: yarn install --frozen-lockfile
+
+      - save_cache:
+          key: v1-yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
 
   lint:
     executor: default
