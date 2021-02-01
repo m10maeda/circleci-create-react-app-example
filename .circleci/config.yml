@@ -1,0 +1,70 @@
+version: 2.1
+
+executors:
+  default:
+    docker:
+      - image: circleci/node:14.15
+
+jobs:
+  lint:
+    executor: default
+
+    steps:
+      - run:
+          name: Run Linting
+          command: echo Lint
+
+  unit-test:
+    executor: default
+
+    steps:
+      - run:
+          name: Run Unit Testing
+          command: echo Unit Test
+
+  e2e-test:
+    executor: default
+
+    steps:
+      - run:
+          name: Run E2E Testing
+          command: echo E2E Test
+
+  build:
+    executor: default
+
+    steps:
+      - run:
+          name: Run Building
+          command: echo Build
+
+  deploy:
+    executor: default
+
+    steps:
+      - run:
+          name: Run Deploying
+          command: echo Deploy
+
+workflows:
+  version: 2
+
+  main:
+    jobs:
+      - lint
+
+      - unit-test:
+          requires:
+            - lint
+
+      - build:
+          requires:
+            - unit-test
+
+      - e2e-test:
+          requires:
+            - build
+
+      - deploy:
+          requires:
+            - e2e-test
