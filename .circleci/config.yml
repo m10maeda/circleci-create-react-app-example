@@ -31,9 +31,13 @@ jobs:
     executor: default
 
     steps:
+      - checkout
+
+      - resolve-dependencies
+
       - run:
           name: Run Linting
-          command: echo Lint
+          command: yarn lint
 
   unit-test:
     executor: default
