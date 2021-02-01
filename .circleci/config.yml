@@ -8,11 +8,14 @@ executors:
 commands:
   resolve-dependencies:
     steps:
+      - run: ls -al
       - restore_cache:
           keys:
             - v1-yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
             - v1-yarn-packages-{{ .Branch }}-
             - v1-yarn-packages-
+
+      - run: ls -al
 
       - run:
           name: Install Dependencies
@@ -21,10 +24,17 @@ commands:
               yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
             fi
 
+      - run: ls -al
+
       - save_cache:
           key: v1-yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
+
+      - save_cache:
+          key: v1-yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          paths:
+            - ./node_modules
 
 jobs:
   lint:
