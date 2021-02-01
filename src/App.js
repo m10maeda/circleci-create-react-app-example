@@ -22,4 +22,6 @@ function App() {
   );
 }
 
+console.log(foo);
+
 export default App;
