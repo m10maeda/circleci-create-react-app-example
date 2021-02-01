@@ -40,9 +40,21 @@ jobs:
     executor: default
 
     steps:
+      - checkout
+
+      - resolve-dependencies
+
       - run:
           name: Run Unit Testing
-          command: echo Unit Test
+          command: yarn test --coverage --testResultsProcessor=jest-junit
+          environment:
+            JEST_JUNIT_OUTPUT: ./reports/junit/unit-test-results.xml
+
+      - store_test_results:
+          path: ./reports/junit
+
+      - store_artifacts:
+          path: ./coverage
 
   e2e-test:
     executor: default
